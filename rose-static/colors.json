@@ -1,0 +1,27 @@
+{
+    "name": "rose-static-colors",
+    "colors": {
+        "None": "#C0C0C0",
+        "Low": "#50B848",
+        "Moderate": "#FFF200",
+        "Considerable": "#F7941E",
+        "High": "#ED1C24",
+        "Extreme": "#000000"
+    },
+    "light-shadow": {
+        "None": "#A2A2A2",
+        "Low": "#3C9034",
+        "Moderate": "#EBCA00",
+        "Considerable": "#E36C0F",
+        "High": "#CF0E12",
+        "Extreme": "#000000"
+    },
+    "dark-shadow": {
+        "None": "#848484",
+        "Low": "#286820",
+        "Moderate": "#D7A200",
+        "Considerable": "#CF4400",
+        "High": "#BB0000",
+        "Extreme": "#000000"
+    }
+}

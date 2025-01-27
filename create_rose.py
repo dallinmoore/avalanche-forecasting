@@ -10,6 +10,9 @@ with open('./rose-static/coordinates.json') as f:
 def hex_to_rgb(hex_code):
     """Converts a hex color code to an RGB tuple."""
     hex_code = hex_code.lstrip('#')
+    # the tuple is in the order (R, G, B, A)
+    # A can be modified to change the transparency of the color (0 is transparent, 255 is opaque)
+    # (lines will still be fully opaque)
     return tuple(int(hex_code[i:i+2], 16) for i in (0, 2, 4))  + (255,)
 
 def fill_region(img, coordinates, fill_color_hex):

@@ -1,27 +1,26 @@
 {
-    "name": "rose-static-colors",
     "colors": {
-        "None": "#C0C0C0",
-        "Low": "#50B848",
-        "Moderate": "#FFF200",
-        "Considerable": "#F7941E",
-        "High": "#ED1C24",
-        "Extreme": "#000000"
+        "none": "#C0C0C0",
+        "low": "#50B848",
+        "moderate": "#FFF200",
+        "considerable": "#F7941E",
+        "high": "#ED1C24",
+        "extreme": "#000000"
     },
     "light-shadow": {
-        "None": "#A2A2A2",
-        "Low": "#3C9034",
-        "Moderate": "#EBCA00",
-        "Considerable": "#E36C0F",
-        "High": "#CF0E12",
-        "Extreme": "#000000"
+        "none": "#A2A2A2",
+        "low": "#3C9034",
+        "moderate": "#EBCA00",
+        "considerable": "#E36C0F",
+        "high": "#CF0E12",
+        "extreme": "#000000"
     },
     "dark-shadow": {
-        "None": "#848484",
-        "Low": "#286820",
-        "Moderate": "#D7A200",
-        "Considerable": "#CF4400",
-        "High": "#BB0000",
-        "Extreme": "#000000"
+        "none": "#848484",
+        "low": "#286820",
+        "moderate": "#D7A200",
+        "considerable": "#CF4400",
+        "high": "#BB0000",
+        "extreme": "#000000"
     }
 }

@@ -1,0 +1,28 @@
+{
+    "coordinates": {
+        "North-lower": [200, 70],
+        "Northeast-lower": [285, 100],
+        "East-lower": [320, 170],
+        "Southeast-lower": [290, 250],
+        "South-lower": [200, 280],
+        "Southwest-lower": [100, 250],
+        "West-lower": [75, 170],
+        "Northwest-lower": [110, 100],
+        "North-middle": [200, 100],
+        "Northeast-middle": [250, 120],
+        "East-middle": [270, 160],
+        "Southeast-middle": [250, 210],
+        "South-middle": [200, 230],
+        "Southwest-middle": [150, 210],
+        "West-middle": [120, 160],
+        "Northwest-middle": [150, 120],
+        "North-upper": [200, 130],
+        "Northeast-upper": [220, 130],
+        "East-upper": [230, 155],
+        "Southeast-upper": [230, 175],
+        "South-upper": [200, 185],
+        "Southwest-upper": [175, 175],
+        "West-upper": [160, 155],
+        "Northwest-upper": [175, 140]
+    }
+}

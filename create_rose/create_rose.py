@@ -1,10 +1,10 @@
 from PIL import Image, ImageDraw
 import json
 
-with open('./rose-static/colors.json') as f:
+with open('./rose_static/colors.json') as f:
     colors = json.load(f)
 
-with open('./rose-static/coordinates.json') as f:
+with open('./rose_static/coordinates.json') as f:
     coordinates = json.load(f)
 
 def hex_to_rgb(hex_code):
@@ -120,6 +120,6 @@ if __name__ == '__main__':
     }
 
     # Test usage
-    image_path = "./rose-static/blank-rose.png"
-    filled_image = create_rose(image_path, input_num)
+    image_path = "./rose_static/blank-rose.png"
+    filled_image = create_rose(image_path, input)
     filled_image.save("./generated-roses/example.png")

@@ -7,6 +7,8 @@ import time
 import json
 import numpy as np
 from PIL import Image
+import argparse
+from datetime import datetime
 
 class AvalancheForecastScraper:
     BASE_URL = 'https://utahavalanchecenter.org'
@@ -136,10 +138,22 @@ class AvalancheForecastScraper:
         except Exception as e:
             print(f"Error in process_rose_data: {e}")
     
-    def scrape_forecast_data(self, latest_date=None):
-        """Scrape forecast data up to the latest_date."""
+    def scrape_forecast_data(self, latest_date=None, start_date=None, end_date=None):
+        """
+        Scrape forecast data with optional date filtering.
+        - If start_date and end_date are provided, scrape data within that range
+        - If only latest_date is provided, scrape data newer than latest_date
+        """
         page = 0
         data = []
+        
+        # Convert input dates to datetime objects if provided
+        if latest_date and isinstance(latest_date, str):
+            latest_date = pd.to_datetime(latest_date)
+        if start_date and isinstance(start_date, str):
+            start_date = pd.to_datetime(start_date)
+        if end_date and isinstance(end_date, str):
+            end_date = pd.to_datetime(end_date)
         
         while True:
             url = f"{self.BASE_URL}{self.ARCHIVES_URL}{page}"
@@ -168,15 +182,30 @@ class AvalancheForecastScraper:
                     if not link.startswith('http'):
                         link = self.BASE_URL + link
                     
+                    # Check if the date is within the desired range
+                    row_date = pd.to_datetime(date_issued)
+                    
+                    # Skip if row_date is outside the start_date to end_date range
+                    if start_date and end_date and (row_date < start_date or row_date > end_date):
+                        continue
+                    
+                    # Skip if row_date is older than or equal to latest_date (avoid duplicates)
+                    if latest_date and row_date <= latest_date:
+                        continue
+                    
                     data.append({
                         'Date Issued': date_issued,
                         'Forecast Area': forecast_area,
                         'Link': link
                     })
-                    
-                    # Stop if we've reached the latest date
-                    if latest_date and pd.to_datetime(date_issued) <= latest_date:
-                        return pd.DataFrame(data)
+                
+                # Stop scraping if we've gone past our date range
+                # This assumes that pages are in chronological order
+                if start_date:
+                    oldest_date_on_page = pd.to_datetime(table_rows[-1].find_all('td')[0].get_text().strip())
+                    if oldest_date_on_page < start_date:
+                        print(f"\nReached date limit ({start_date}). Stopping.")
+                        break
                 
                 page += 1
                 
@@ -194,28 +223,43 @@ class AvalancheForecastScraper:
         seconds = elapsed_time % 60
         print(f"Progress: {percent_complete:.2f}% complete. {minutes} min {seconds:.2f} sec elapsed.", end='\r', flush=True)
     
-    def run(self):
-        """Main execution function."""
+    def run(self, start_date=None, end_date=None):
+        """Main execution function with optional date range parameters."""
         try:
             # Define main output file path
             output_csv = os.path.join(self.curr_dir, '..', 'avalanche-forecast-rose.csv')
             
             # Load existing data to find latest date
+            latest_date = None
+            existing_data = None
+            
             try:
-                existing_data = pd.read_csv(output_csv)
-                latest_date = pd.to_datetime(existing_data['Date Issued']).max()
-                print(f"Getting forecasts newer than {latest_date}")
-            except (FileNotFoundError, KeyError):
-                latest_date = None
+                if os.path.exists(output_csv):
+                    existing_data = pd.read_csv(output_csv)
+                    if not existing_data.empty and 'Date Issued' in existing_data.columns:
+                        latest_date = pd.to_datetime(existing_data['Date Issued']).max()
+                        print(f"Getting forecasts newer than {latest_date}")
+                    else:
+                        existing_data = pd.DataFrame()
+                        print("Existing data found but no valid dates. Scraping all available forecasts")
+                else:
+                    existing_data = pd.DataFrame()
+                    print("No existing data found, scraping all available forecasts")
+            except Exception as e:
+                print(f"Error reading existing data: {e}")
                 existing_data = pd.DataFrame()
-                print("No existing data found, scraping all available forecasts")
+            
+            # If both start_date and end_date are provided, use those instead of latest_date
+            if start_date and end_date:
+                print(f"Scraping forecasts from {start_date} to {end_date}")
+                latest_date = None
             
             # Scrape new forecast data
-            new_data_df = self.scrape_forecast_data(latest_date)
+            new_data_df = self.scrape_forecast_data(latest_date, start_date, end_date)
             
             if new_data_df.empty:
                 print("No new forecasts found.")
-                return
+                return True
                 
             print(f"Found {len(new_data_df)} new forecasts to process")
             
@@ -264,7 +308,7 @@ class AvalancheForecastScraper:
             # Write results to temporary file first
             temp_output = os.path.join(self.curr_dir, '..', 'temp_avalanche-forecast-rose.csv')
             
-            if not os.path.exists(output_csv):
+            if existing_data is None or existing_data.empty:
                 # Create new file if doesn't exist
                 results_df.to_csv(temp_output, index=False)
             else:
@@ -280,9 +324,10 @@ class AvalancheForecastScraper:
                     os.rename(temp_output, output_csv)
                 
             print(f"\nAdded {len(results)} new forecasts to {output_csv}")
-            
+            return True
         except Exception as e:
             print(f"Error in execution: {e}")
+            return False
 
     def test_rose_reading(self, image_path):
         """Test function to read a rose from a local image file."""
@@ -298,18 +343,24 @@ class AvalancheForecastScraper:
             return None
 
 if __name__ == "__main__":
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Process avalanche forecast data')
+    parser.add_argument('--start_date', help='Start date in YYYY-MM-DD format')
+    parser.add_argument('--end_date', help='End date in YYYY-MM-DD format')
+    parser.add_argument('--test', action='store_true', help='Run in test mode')
+    parser.add_argument('--test_image', help='Image path for test mode')
+    
+    args = parser.parse_args()
+    
     scraper = AvalancheForecastScraper()
     
-    # Check if there's a command line argument for testing
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == 'test':
-        if len(sys.argv) > 2:
-            # Test with provided image path
-            scraper.test_rose_reading(sys.argv[2])
+    if args.test:
+        # Test with provided image path or default image
+        if args.test_image:
+            scraper.test_rose_reading(args.test_image)
         else:
-            # Test with default image
             test_image = os.path.join(scraper.curr_dir, 'practice.png')
             scraper.test_rose_reading(test_image)
     else:
-        # Run the main scraper
-        scraper.run()
+        # Run the main scraper with optional date range
+        scraper.run(args.start_date, args.end_date)

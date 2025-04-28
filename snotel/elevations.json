@@ -1,0 +1,140 @@
+{
+    "regions": [
+      {
+        "name": "Logan",
+        "elevation_levels": {
+          "level_1": {
+              "max": 7000,
+              "min": 0
+          },
+          "level_2": {
+              "max": 8500,
+              "min": 7001
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 8501
+          }
+        }
+      },
+      {
+        "name": "Ogden",
+        "elevation_levels": {
+          "level_1": {
+              "max": 7000,
+              "min": 0
+          },
+          "level_2": {
+              "max": 8500,
+              "min": 7001
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 8501
+          }
+        }
+      },
+      {
+        "name": "Uintas",
+        "elevation_levels": {
+          "level_1": {
+              "max": 9500,
+              "min": 0
+          },
+          "level_2": {
+              "max": 10000,
+              "min": 9501
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 10001
+          }
+        }
+      },
+      {
+        "name": "Salt Lake",
+        "elevation_levels": {
+          "level_1": {
+              "max": 8000,
+              "min": 0
+          },
+          "level_2": {
+              "max": 9500,
+              "min": 8001
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 9501
+          }
+        }
+      },
+      {
+        "name": "Provo",
+        "elevation_levels": {
+          "level_1": {
+              "max": 8000,
+              "min": 0
+          },
+          "level_2": {
+              "max": 9500,
+              "min": 8001
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 9501
+          }
+        }
+      },
+      {
+        "name": "Skyline",
+        "elevation_levels": {
+          "level_1": {
+              "max": 8000,
+              "min": 0
+          },
+          "level_2": {
+              "max": 9500,
+              "min": 8001
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 9501
+          }
+        }
+      },
+      {
+        "name": "Moab",
+        "elevation_levels": {
+          "level_1": {
+              "max": 9500,
+              "min": 0
+          },
+          "level_2": {
+              "max": 10000,
+              "min": 9501
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 10001
+          }
+        }
+      },
+      {
+        "name": "Abajos",
+        "elevation_levels": {
+          "level_1": {
+              "max": 9500,
+              "min": 0
+          },
+          "level_2": {
+              "max": 10000,
+              "min": 9501
+          },
+          "level_3": {
+              "max": 20000,
+              "min": 10001
+          }
+        }
+      }
+    ]
+  }

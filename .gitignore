@@ -178,3 +178,5 @@ cython_debug/
 
 # Additional files to ignore
 avalanche-forecast-rose.csv
+snotel/snotel_data.csv
+snotel/snotel_ts_data.csv
